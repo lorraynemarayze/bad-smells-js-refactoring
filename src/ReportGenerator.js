@@ -26,9 +26,7 @@ export class ReportGenerator {
     // --- Seção do Corpo (Alta Complexidade) ---
     for (const item of items) {
       if (user.role === 'ADMIN') {
-        // Admins veem todos os itens
         if (item.value > 1000) {
-          // Lógica bônus para admins
           item.priority = true;
         }
 
@@ -37,11 +35,12 @@ export class ReportGenerator {
           total += item.value;
         } else if (reportType === 'HTML') {
           const style = item.priority ? 'style="font-weight:bold;"' : '';
-          report += `<tr ${style}><td>${item.id}</td><td>${item.name}</td><td>${item.value}</td></tr>\n`;
+          const styleAttribute = style ? ` ${style}` : '';
+          
+          report += `<tr${styleAttribute}><td>${item.id}</td><td>${item.name}</td><td>${item.value}</td></tr>\n`;
           total += item.value;
         }
       } else if (user.role === 'USER') {
-        // Users comuns só veem itens de valor baixo
         if (item.value <= 500) {
           if (reportType === 'CSV') {
             report += `${item.id},${item.name},${item.value},${user.name}\n`;
